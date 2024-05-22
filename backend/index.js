@@ -12,9 +12,6 @@ app.use(express.json());
 
 require('dotenv').config();
 
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://event-management-t2gv-sakshis-projects-8cf90f76.vercel.app/']
-  }));
 
 const mongoose = require('mongoose');
 
