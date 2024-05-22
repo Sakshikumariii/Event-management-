@@ -31,9 +31,9 @@ const App = () => {
       <Routes>
         {/* Route for the signup page */}
         <Route path='/signup' element={<SignUp onSignUp={handleLogin} />} />
-        <Route path='/login' element={<Login onSignUp={handleLogin} />} />
+        <Route path='/login' element={<Login onLogin={handleLogin} />} />
         {/* Routes accessible only to authenticated users */}
-        <Route path='/*' element={isAuthenticated ? <AuthenticatedRoutes onLogout={handleLogout} /> : <Navigate to='/signup' />} />
+        <Route path='/*' element={isAuthenticated ? <AuthenticatedRoutes onLogout={handleLogout} /> : <Navigate to='/login' />} />
       </Routes>
     </div>
   );
@@ -46,19 +46,17 @@ const AuthenticatedRoutes = ({ onLogout }) => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
-        <Route path='/' element={<Home/>}></Route>
-            <Route path='/about' element={<About/>}></Route>
-            <Route path='/booking' element={<Booking/>}></Route>
-            <Route path='/pricing' element={<Price/>}></Route>
-            <Route path='/service' element={<Service/>}></Route>
-            <Route path='/blog' element={<Blog/>}></Route>
-            <Route path='/gallery' element={<Gallery/>}></Route>
-            <Route path='/contact' element={<Contact/>}></Route>
-            <Route path='/restaurant' element={<Restaurant/>}></Route>
-            <Route path='/decoration' element={<Decoration/>}></Route>
-            <Route path='/dish' element={<Dish/>}></Route>
-            <Route path='/footer' element={<Footer/>}></Route>
+        <Route path='/booking' element={<Booking />} />
+        <Route path='/pricing' element={<Price />} />
+        <Route path='/service' element={<Service />} />
+        <Route path='/blog' element={<Blog />} />
+        <Route path='/gallery' element={<Gallery />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/restaurant' element={<Restaurant />} />
+        <Route path='/decoration' element={<Decoration />} />
+        <Route path='/dish' element={<Dish />} />
       </Routes>
+      <Footer />
     </>
   );
 };

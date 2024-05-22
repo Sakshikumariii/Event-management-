@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSignInAlt, FaRegUser, FaLock } from "react-icons/fa";
@@ -9,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -17,6 +16,8 @@ const Login = () => {
       setError("Please fill in all fields.");
       return;
     }
+
+    setLoading(true); // Set loading state
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
@@ -33,8 +34,10 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data));
+      setLoading(false);
       navigate("/"); // Redirect to home page on successful login
     } catch (error) {
+      setLoading(false);
       setError(error.message || "An error occurred. Please try again.");
     }
   };
@@ -66,8 +69,13 @@ const Login = () => {
            <span className="input-group-text"><FaLock /></span>
         </div>
         {error && <p className="error-message">{error}</p>}
-        <button onClick={handleLogin} className="form-control btn btn-dark btn-md btn-block custom-rounded-button" type="button">
-          <FaSignInAlt className="login-icon" /> Login
+        <button
+          onClick={handleLogin}
+          className="form-control btn btn-dark btn-md btn-block custom-rounded-button"
+          type="button"
+          disabled={loading} // Disable button when loading
+        >
+          {loading ? "Logging in..." : <><FaSignInAlt className="login-icon" /> Login</>}
         </button>
         <div className="d-flex justify-content-center align-items-center flex-column">
           <span className="text-center text-sm">or</span>
@@ -79,5 +87,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
