@@ -9,7 +9,12 @@ const Bookingdata=require('./db/Bookingdata');
 app.use(cors());
 app.use(express.json());
 
+
 require('dotenv').config();
+
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://event-management-rrw4.vercel.app/']
+  }));
 
 const mongoose = require('mongoose');
 
