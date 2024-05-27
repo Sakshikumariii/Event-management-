@@ -74,21 +74,21 @@ export default function Booking() {
 
   const myfunc = () => {
     alert('Successfully booked!');
-  }
+  };
 
   const collectData = async () => {
-    console.log(name, location, date1, date2, message)
+    console.log(name, location, date1, date2, message);
     let result = await fetch(`${process.env.REACT_APP_API_URL}/Booking`, {
-      method: 'post',
+      method: 'POST',
       body: JSON.stringify({ name, location, date1, date2, message }),
       headers: {
         'Content-Type': 'application/json'
       }
-    })
+    });
     result = await result.json();
-    console.log(result)
-    localStorage.setItem("bookings", JSON.stringify(result))
-  }
+    console.log(result);
+    localStorage.setItem("bookings", JSON.stringify(result));
+  };
 
   useEffect(() => {
     if (name && location && date1 && date2 && message) {
@@ -105,7 +105,7 @@ export default function Booking() {
     } else {
       alert('Please fill all inputs!');
     }
-  }
+  };
 
   return (
     <section className="booking" id="booking">
@@ -116,7 +116,7 @@ export default function Booking() {
         <div className="row">
           <div className="col-lg-4 py-3 py-md-0">
             <div className="card">
-              <img src={require('./../img/booking.png')} alt="img"/>
+              <img src={require('./../img/booking.png')} alt="Booking" className="img-fluid" />
             </div>
           </div>
 
@@ -150,7 +150,7 @@ export default function Booking() {
               </div>
               <div className="row">
                 <div className="col-md-12 mb-3">
-                  <textarea rows="3" className="form-control" name="message" placeholder="Enter the Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+                  <textarea rows="3" className="form-control" name="message" placeholder="Enter the Message" value={message} onChange={(e) => setMessage(e.target.value)} required></textarea>
                 </div>
               </div>
               <div className="row">
@@ -164,4 +164,4 @@ export default function Booking() {
       </div>
     </section>
   );
-};
+}

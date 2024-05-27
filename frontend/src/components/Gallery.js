@@ -50,7 +50,7 @@ export default function Gallery() {
                   <img
                     src={require(`./../img/${image}.png`)}
                     alt=""
-                    height="215"
+                    className="img-fluid" // Add Bootstrap class for responsive images
                     onClick={() => handleImageClick(image)}
                   />
                 </div>
@@ -62,4 +62,3 @@ export default function Gallery() {
     </section>
   );
 }
-

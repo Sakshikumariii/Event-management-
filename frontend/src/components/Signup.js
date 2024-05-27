@@ -1,37 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import leftImage from '../img/sign.png';
 import { FaSignInAlt, FaRegUser, FaLock, FaEnvelope, FaPhone } from "react-icons/fa";
 import './LoginSignup.css';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
-  const [isInputFilled, setIsInputFilled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const auth = localStorage.getItem("user");
-    if (auth) {
-      navigate("/");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    const { name, email, password, confirmPassword, phone } = formData;
-    setIsInputFilled(!!(name && email && password && confirmPassword && phone));
-  }, [formData]);
-
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  }, []);
+  const handleChange = (e, setState) => {
+    setState(e.target.value);
+  };
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,10 +28,8 @@ const Signup = () => {
     return phoneRegex.test(phone);
   };
 
-  const collectData = async (e) => {
-    e.preventDefault();
+  const collectData = async () => {
     setError(""); // Clear previous errors
-    const { name, email, password, confirmPassword, phone } = formData;
 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
@@ -63,6 +46,8 @@ const Signup = () => {
       return;
     }
 
+    setLoading(true); // Set loading state
+
     try {
       let result = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
         method: "POST",
@@ -71,58 +56,95 @@ const Signup = () => {
           "Content-Type": "application/json",
         },
       });
+
+      if (!result.ok) {
+        throw new Error("Registration failed. Please try again.");
+      }
+
       result = await result.json();
       localStorage.setItem("user", JSON.stringify(result));
-
-      // Delay navigation to avoid rapid state change issues
-      setTimeout(() => {
-        navigate("/");
-      }, 300);
+      navigate("/");
     } catch (error) {
-      setError("An error occurred. Please try again later.");
+      setError(error.message || "An error occurred. Please try again later.");
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
   return (
     <div className="container-fluid" style={{ backgroundColor: "rgb(143 207 231 / 66%)" }}>
       <div className="row Signup-container shadow d-flex">
-        <div className="col-lg-6">
+        <div className="col-md-6">
           <div className="left-image">
-            <img src={leftImage} alt="Left Image" width={300} height={400} />
+            <img src={leftImage} alt="Left Image"  />
           </div>
         </div>
-        <div className="col-lg-6 right-container">
+        <div className="col-md-6 right-container">
           <h2 className="text-center">Sign Up</h2>
-          <form onSubmit={collectData}>
-            {['name', 'email', 'password', 'confirmPassword', 'phone'].map((field, idx) => (
-              <div className="input-group mb-3" key={idx}>
-                <input
-                  type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'password'}
-                  placeholder={`Enter your ${field}`}
-                  className="form-control"
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleChange}
-                  required
-                />
-                <span className="input-group-text">
-                  {field === 'name' && <FaRegUser />}
-                  {field === 'email' && <FaEnvelope />}
-                  {field === 'password' && <FaLock />}
-                  {field === 'confirmPassword' && <FaLock />}
-                  {field === 'phone' && <FaPhone />}
-                </span>
-              </div>
-            ))}
-            {error && <p className="error-message text-white">{error}</p>}
-            <button
-              type="submit"
-              disabled={!isInputFilled}
-              className="form-control btn btn-dark btn-md btn-block custom-rounded-button"
-            >
-              <FaSignInAlt className="login-icon" /> Sign Up
-            </button>
-          </form>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="form-control"
+              value={name}
+              onChange={(e) => handleChange(e, setName)}
+              required
+            />
+            <span className="input-group-text"><FaRegUser /></span>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="form-control"
+              value={email}
+              onChange={(e) => handleChange(e, setEmail)}
+              required
+            />
+            <span className="input-group-text"><FaEnvelope /></span>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="form-control"
+              value={password}
+              onChange={(e) => handleChange(e, setPassword)}
+              required
+            />
+            <span className="input-group-text"><FaLock /></span>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              className="form-control"
+              value={confirmPassword}
+              onChange={(e) => handleChange(e, setConfirmPassword)}
+              required
+            />
+            <span className="input-group-text"><FaLock /></span>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="tel"
+              placeholder="Enter your phone number"
+              className="form-control"
+              value={phone}
+              onChange={(e) => handleChange(e, setPhone)}
+              required
+            />
+            <span className="input-group-text"><FaPhone /></span>
+          </div>
+          {error && <p className="error-message text-white">{error}</p>}
+          <button
+            onClick={collectData}
+            disabled={!name || !email || !password || !confirmPassword || !phone || loading}
+            className="form-control btn btn-dark btn-md btn-block custom-rounded-button"
+            type="button"
+          >
+            {loading ? "Signing up..." : <><FaSignInAlt className="login-icon" /> Sign Up</>}
+          </button>
           <div className="d-flex justify-content-center text-white align-items-center flex-column">
             <span className="text-center text-sm">or</span>
             <span>Already have an account, <Link to="/login" className="text-center text-link text-white">Login</Link></span>

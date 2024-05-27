@@ -23,13 +23,11 @@ export default function Contact() {
     };
 
     const validateEmail = (email) => {
-        // Email validation logic
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
     const validatePhoneNumber = (phoneNumber) => {
-        // Phone number validation logic
         const phoneRegex = /^[0-9]{10}$/;
         return phoneRegex.test(phoneNumber);
     };
@@ -49,7 +47,6 @@ export default function Contact() {
         });
         result = await result.json();
         console.log(result);
-        // Use localStorage to store the result if needed
         localStorage.setItem("contacts", JSON.stringify(result));
     };
 
@@ -57,73 +54,76 @@ export default function Contact() {
         <div className="container mt-5 mb-5 contact-container">
             <h2 className="text-center mb-5">Contact us</h2>
             <div className="row">
-                <div className="col-lg-1"></div>
                 <div className="col-lg-4">
-                    {/* Left side information and social media icons */}
                     <div className="contact-info">
                         <h2>Get In Touch</h2>
                         <p className="text-white">
                             Feel free to reach out to us via the following platforms:
                         </p>
-                        <div className="col-md-6 d-flex justify-content-center align-items-center">
-                            <a href="/" className="text-white social-icon me-3">
-                                <i className="fab fa-facebook-square"></i>
-                            </a>
-                            <a href="/" className="text-white social-icon me-3">
-                                <i className="fab fa-instagram-square"></i>
-                            </a>
-                            <a href="/" className="text-white social-icon me-3">
-                                <i className="fab fa-github-square"></i>
-                            </a>
-                            <a href="/" className="text-white social-icon">
-                                <i className="fab fa-twitter-square"></i>
-                            </a>
-                        </div>
+                        <ul className="social-icons">
+                   
+                        <a href="https://www.linkedin.com/in/sakshi-kumari-007a62192/" className="text-white social-icon me-3">
+    <i className="fab fa-linkedin"></i>
+</a>
+
+    <a href="https://github.com/Sakshikumariii" className="text-white social-icon me-3">
+        <i className="fab fa-github-square"></i>
+    </a>
+                                <a href="/" className="text-white social-icon">
+                                    <i className="fab fa-twitter-square"></i>
+                                </a>
+                        </ul>
                     </div>
                 </div>
-                <div className="col-lg-6">
-                    {/* Form for users to input their contact details */}
+                <div className="col-lg-8">
                     <div className="contact">
-                        <input
-                            type="text"
-                            placeholder="Enter your name"
-                            name="name"
-                            className="form-control mb-3"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            name="email"
-                            className="form-control mb-3"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="tel"
-                            placeholder="Enter your phone"
-                            name="phone"
-                            className="form-control mb-3"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                        />
-                        <textarea
-                            rows="3"
-                            placeholder="Enter your message"
-                            className="form-control mb-3"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        ></textarea>
-                        <button onClick={collectData} id="cont-btn" className="submit" type="button">
+                        <div className="mb-3">
+                            <input
+                                type="text"
+                                placeholder="Enter your name"
+                                name="name"
+                                className="form-control"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                name="email"
+                                className="form-control"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <input
+                                type="tel"
+                                placeholder="Enter your phone"
+                                name="phone"
+                                className="form-control"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <textarea
+                                rows="3"
+                                placeholder="Enter your message"
+                                className="form-control"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                            ></textarea>
+                        </div>
+                        <button onClick={collectData} id="cont-btn" className="btn bg-black text-white mt-3" type="button">
                             Submit
                         </button>
                     </div>
                 </div>
-                <div className="col-lg-1"></div>
             </div>
         </div>
     );
